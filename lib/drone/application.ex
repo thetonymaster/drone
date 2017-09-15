@@ -6,14 +6,11 @@ defmodule Drone.Application do
   use Application
 
   def start(_type, _args) do
-    # List all child processes to be supervised
     children = [
-      # Starts a worker by calling: Drone.Worker.start_link(arg)
-      # {Drone.Worker, arg},
+      {Task.Supervisor, name: Drone.TaskSupervisor},
+      Supervisor.child_spec({Task, fn -> Drone.accept(4040) end}, restart: :permanent)
     ]
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Drone.Supervisor]
     Supervisor.start_link(children, opts)
   end
