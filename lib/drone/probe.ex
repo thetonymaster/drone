@@ -15,6 +15,9 @@ defmodule Drone.Probe do
     Agent.get(probe, &Map.get(&1, key))
   end
 
+  @doc """
+  Updates or creates a key on a probe
+  """
   def put(probe, key, value) do
     Agent.update(probe, &Map.put(&1, key, value))
   end
